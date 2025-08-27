@@ -1,0 +1,186 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dynamic Product Filter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f0f2f5;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    select {
+      padding: 8px 12px;
+      font-size: 16px;
+      margin-bottom: 25px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .product-item {
+      background: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+      width: 180px;
+      text-align: center;
+    }
+
+    .product-item h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+    }
+
+    .product-category {
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Dynamic Product Filter</h1>
+
+  <label for="categoryFilter">Filter by Category:</label>
+  <select id="categoryFilter">
+    <option value="all">All</option>
+    <option value="shoes">Shoes</option>
+    <option value="shirts">Shirts</option>
+    <option value="gadgets">Gadgets</option>
+  </select>
+
+  <div class="product-list" id="productList">
+    <!-- Products will be rendered here -->
+  </div>
+
+  <script>
+    // Array of products with categories
+    const products = [
+      { id: 1, name: "Running Shoes", category: "shoes" },
+      { id: 2, name: "Casual Sneakers", category: "shoes" },
+      { id: 3, name: "Formal Shirt", category: "shirts" },
+      { id: 4, name: "Graphic Tee", category: "shirts" },
+      { id: 5, name: "Smartphone", category: "gadgets" },
+      { id: 6, name: "Wireless Earbuds", category: "gadgets" },
+      { id: 7, name: "Hiking Boots", category: "shoes" },
+      { id: 8, name: "Denim Jacket", category: "shirts" },
+      { id: 9, name: "Smartwatch", category: "gadgets" }
+    ];
+
+    const productListEl = document.getElementById('productList');
+    const categoryFilterEl = document.getElementById('categoryFilter');
+
+    // Function to render products based on filtered array
+    function renderProducts(productsToRender) {
+      productListEl.innerHTML = ''; // Clear existing content
+
+      if (productsToRender.length === 0) {
+        productListEl.innerHTML = '<p>No products found.</p>';
+        return;
+      }
+
+      productsToRender.forEach(product => {
+        const productEl = document.createElement('div');
+        productEl.classList.add('product-item');
+        productEl.innerHTML = `
+          <h3>${product.name}</h3>
+          <p class="product-category">${capitalizeFirstLetter(product.category)}</p>
+        `;
+        productListEl.appendChild(productEl);
+      });
+    }
+
+    // Utility to capitalize first letter of a word
+    function capitalizeFirstLetter(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // Event handler for dropdown change
+    categoryFilterEl.addEventListener('change', (e) => {
+      const selectedCategory = e.target.value;
+
+      if (selectedCategory === 'all') {
+        renderProducts(products);
+      } else {
+        const filteredProducts = products.filter(p => p.category === selectedCategory);
+        renderProducts(filteredProducts);
+      }
+    });
+
+    // Initial render: show all products
+    renderProducts(products);
+  </script>
+
+</body>
+</html>
+js:
+// Array of products with categories
+const products = [
+  { id: 1, name: "Running Shoes", category: "shoes" },
+  { id: 2, name: "Casual Sneakers", category: "shoes" },
+  { id: 3, name: "Formal Shirt", category: "shirts" },
+  { id: 4, name: "Graphic Tee", category: "shirts" },
+  { id: 5, name: "Smartphone", category: "gadgets" },
+  { id: 6, name: "Wireless Earbuds", category: "gadgets" },
+  { id: 7, name: "Hiking Boots", category: "shoes" },
+  { id: 8, name: "Denim Jacket", category: "shirts" },
+  { id: 9, name: "Smartwatch", category: "gadgets" }
+];
+
+const productListEl = document.getElementById('productList');
+const categoryFilterEl = document.getElementById('categoryFilter');
+
+// Function to render products based on filtered array
+function renderProducts(productsToRender) {
+  productListEl.innerHTML = ''; // Clear existing content
+
+  if (productsToRender.length === 0) {
+    productListEl.innerHTML = '<p>No products found.</p>';
+    return;
+  }
+
+  productsToRender.forEach(product => {
+    const productEl = document.createElement('div');
+    productEl.classList.add('product-item');
+    productEl.innerHTML = `
+      <h3>${product.name}</h3>
+      <p class="product-category">${capitalizeFirstLetter(product.category)}</p>
+    `;
+    productListEl.appendChild(productEl);
+  });
+}
+
+// Utility to capitalize first letter of a word
+function capitalizeFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// Event handler for dropdown change
+categoryFilterEl.addEventListener('change', (e) => {
+  const selectedCategory = e.target.value;
+
+  if (selectedCategory === 'all') {
+    renderProducts(products);
+  } else {
+    const filteredProducts = products.filter(p => p.category === selectedCategory);
+    renderProducts(filteredProducts);
+  }
+});
+
+// Initial render: show all products
+renderProducts(products);
+
+
