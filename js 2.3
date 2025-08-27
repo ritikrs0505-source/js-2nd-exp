@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interactive SVG Drawing Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+      user-select: none; /* prevent text selection while drawing */
+    }
+
+    h1 {
+      margin-bottom: 15px;
+    }
+
+    svg {
+      border: 2px solid #333;
+      background-color: white;
+      width: 800px;
+      height: 500px;
+      display: block;
+      margin-top: 10px;
+      cursor: crosshair;
+    }
+
+    /* Optional: style for the rectangles */
+    rect {
+      fill: rgba(0, 123, 255, 0.3);
+      stroke: #007bff;
+      stroke-width: 2;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Interactive SVG Drawing Tool</h1>
+  <p>Click and drag inside the box below to draw rectangles.</p>
+
+  <svg id="drawingCanvas"></svg>
+
+  <script>
+    const svg = document.getElementById('drawingCanvas');
+
+    let isDrawing = false;
+    let startX = 0;
+    let startY = 0;
+    let currentRect = null;
+
+    // Convert mouse event coordinates to SVG coordinates
+    function getSvgCoords(event) {
+      const rect = svg.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      };
+    }
+
+    svg.addEventListener('mousedown', (e) => {
+      isDrawing = true;
+
+      const coords = getSvgCoords(e);
+      startX = coords.x;
+      startY = coords.y;
+
+      // Create a new rect and add to SVG
+      currentRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      currentRect.setAttribute('x', startX);
+      currentRect.setAttribute('y', startY);
+      currentRect.setAttribute('width', 0);
+      currentRect.setAttribute('height', 0);
+      svg.appendChild(currentRect);
+    });
+
+    svg.addEventListener('mousemove', (e) => {
+      if (!isDrawing) return;
+
+      const coords = getSvgCoords(e);
+
+      const rectX = Math.min(coords.x, startX);
+      const rectY = Math.min(coords.y, startY);
+      const rectWidth = Math.abs(coords.x - startX);
+      const rectHeight = Math.abs(coords.y - startY);
+
+      // Update the rectangle's position and size dynamically
+      currentRect.setAttribute('x', rectX);
+      currentRect.setAttribute('y', rectY);
+      currentRect.setAttribute('width', rectWidth);
+      currentRect.setAttribute('height', rectHeight);
+    });
+
+    svg.addEventListener('mouseup', (e) => {
+      if (isDrawing) {
+        isDrawing = false;
+
+        // If width or height is too small, remove the rect (optional)
+        const width = parseFloat(currentRect.getAttribute('width'));
+        const height = parseFloat(currentRect.getAttribute('height'));
+        if (width < 5 || height < 5) {
+          svg.removeChild(currentRect);
+        }
+
+        currentRect = null;
+      }
+    });
+
+    // Optional: handle mouse leaving the SVG (stop drawing)
+    svg.addEventListener('mouseleave', (e) => {
+      if (isDrawing) {
+        isDrawing = false;
+        if (currentRect) {
+          svg.removeChild(currentRect);
+          currentRect = null;
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
