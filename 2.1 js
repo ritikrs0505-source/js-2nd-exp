@@ -1,0 +1,73 @@
+html code :
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Character Counter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    textarea {
+      width: 400px;
+      height: 200px;
+      padding: 10px;
+      font-size: 16px;
+      resize: vertical;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .char-counter {
+      min-width: 120px;
+      padding: 10px;
+      background-color: #e6f7ff;
+      border: 1px solid #91d5ff;
+      border-radius: 5px;
+      font-size: 18px;
+      color: #0050b3;
+      height: fit-content;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Live Character Counter (Side-by-Side)</h2>
+
+  <div class="container">
+    <textarea id="textInput" placeholder="Type something..."></textarea>
+    <div class="char-counter">
+      Characters: <span id="charCount">0</span>
+    </div>
+  </div>
+
+  <script>
+    const textInput = document.getElementById('textInput');
+    const charCount = document.getElementById('charCount');
+
+    textInput.addEventListener('input', () => {
+      charCount.textContent = textInput.value.length;
+    });
+  </script>
+
+</body>
+</html>
+js code :
+const textInput = document.getElementById('textInput');
+const charCount = document.getElementById('charCount');
+
+textInput.addEventListener('input', () => {
+  charCount.textContent = textInput.value.length;
+});
+
+
